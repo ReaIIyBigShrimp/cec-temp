@@ -5,9 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CEC | Ranger Events</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css"
+        integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"
+        integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -937,7 +943,6 @@
                         this.showSelectedItem = false;
                         this.selectedCategoryOptions = [];
                     },
-
                     generateCategoryOptions: function () {
                         // todo
                     },
@@ -969,10 +974,80 @@
                             position: uluru,
                             map: map,
                         }); */
+                    },
+                    getEvent(eventQueryString) {
+                        // Use query string from url and use for making an API call for single event.
+                        console.log(orArray);
+                        let query = [{
+                                "or": [
+                                    {
+                                        "field": "sys.slug",
+                                        "contains": eventQueryString
+                                    }
+                                ]
+                            },
+                            {
+                                "field": "sys.versionStatus",
+                                "equalTo": "published"
+                            },
+                            {
+                                "field": "sys.contentTypeId",
+                                "equalTo": "rangerEvents"
+                            }
+                        ];
+
+                        uri = JSON.stringify(query);
+
+                        const encoded = encodeURIComponent(uri);
+                        console.log("Encoded component...");
+                        console.log(encoded);
+
+                        // Axios
+                        axios
+                            .get(
+                                (this.getSearchUrl()) + "search?where=" + encoded, {
+                                    params: {
+                                        contentTypeId: this.contentType,
+                                        accessToken: this.accessToken,
+                                        pageSize: this.pageSize,
+                                        pageIndex: 0,
+                                        linkDepth: 5,
+                                        order: this.ordering
+                                    }
+                                }
+                            )
+                            .then(response => {
+                                this.items = response.data.items;
+                                this.loading = false;
+                                this.totalCount = response.data.totalCount;
+                                this.pageCount = response.data.pageCount;
+                                this.generatePaginationBtns(this.currentPageIndex);
+                                console.log("Success!!");
+                                console.log(response);
+                                vanillaToast.show('Results Updated');
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.errored = true
+                            })
+                            .finally(() => this.loading = false)
                     }
                 },
                 mounted() {
                     // Add enter key event listener for 'Enter' key search
+
+                    const params = new Proxy(new URLSearchParams(window.location.search), {
+                        get: (searchParams, prop) => searchParams.get(prop),
+                    });
+                    // Get the value of "some_key" in eg "https://example.com/?event=some_value"
+                    let value = params.event; // "some_value"
+
+                    if (value != null || value != undefined) {
+                        this.getEvent(value);
+                    }
+
+                    console.log("Query string: " + value);
+
                     if (this.showSearch) {
                         document.getElementById("contentTypeSearchInput")
                             .addEventListener("keyup", function (event) {
