@@ -96,7 +96,7 @@
 
                     <div class="card-body col-12 col-md-8 text-center text-md-start ps-md-4 ps-xl-2">
                         <!-- <h2 class="card-title fs-3 mb-4">{{ item.entryTitle }}</h2> -->
-                        <h2 class="ranger-event-heading-link"><a v-on:click="setSelectedItem(item)" href="#"
+                        <h2 class="ranger-event-heading-link"><a v-on:click="setSelectedItem(item)" role="button"
                                 class="ranger-event-title-link card-title">{{ item.entryTitle }}</a></h2>
                         <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
                             <li class="list-inline-item me-4"><strong>Start:</strong>
@@ -161,6 +161,21 @@
                                         v-bind:href="'https://maps.google.com/maps?q='+ selectedItem.mapLocation.lat + ',' + selectedItem.mapLocation.lon"
                                         class="cec-button cec-button-forward" role="button" aria-pressed="true">Get
                                         Directions <small>(opens new window)</small></a>
+                                </div>
+                                <div class="share">
+                                    <div class="card" style="width: 18rem;">
+                                        <ul class="list-group list-group-flush">
+                                            <li id="selectedEventUrlElem" class="list-group-item">
+                                                {{ selectedItem.sys.slug | prependURL }}
+                                            </li>
+                                          <li class="list-group-item">
+                                            <a v-on:click="getShareableLink(selectedItem)"
+                                            class="btn btn-primary cec-button cec-button-forward" role="button" aria-pressed="true">
+                                                Copy URL to clipboard
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </div>  
                                 </div>
                             </div>
                         </div>
@@ -462,6 +477,9 @@
                         const hours = d.getHours();
                         const minutes = d.getMinutes();
                         return hours.toString() + ":" + (minutes < 10 ? '0' : '') + minutes.toString();
+                    },
+                    prependURL(value) {
+                        return window.location.href + "?event=" + value
                     }
                 },
                 methods: {
@@ -977,7 +995,7 @@
                     },
                     getEvent(eventQueryString) {
                         // Use query string from url and use for making an API call for single event.
-                        console.log(orArray);
+                        
                         let query = [{
                                 "or": [
                                     {
@@ -1031,8 +1049,12 @@
                                 this.errored = true
                             })
                             .finally(() => this.loading = false)
+                    },
+                    getShareableLink(selectedItem) {
+                        navigator.clipboard.writeText(window.location.href + "?event=" + selectedItem.sys.slug);
                     }
                 },
+
                 mounted() {
                     // Add enter key event listener for 'Enter' key search
 
