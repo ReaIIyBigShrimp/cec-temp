@@ -1054,7 +1054,7 @@
                     getShareableLink(selectedItem) {
                         let params = new URLSearchParams(window.location.search);
                         params.delete('event');
-                        navigator.clipboard.writeText(window.location.href + "?event=" + selectedItem.sys.slug);
+                        navigator.clipboard.writeText(window.location.href.split('?')[0] + "?event=" + selectedItem.sys.slug);
                         vanillaToast.show('Event URL copied to cliboard');
                     }
                 },
