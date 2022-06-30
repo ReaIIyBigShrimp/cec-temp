@@ -954,7 +954,8 @@
                         this.selectedItem = item;
                         this.showSelectedItem = true;
                         console.log(this.selectedItem);
-                        this.initGoogleMap(item);
+                        let params = new URLSearchParams(window.location.search);
+                        params.delete('event');
                     },
                     unSetSelectedItem: function () {
                         this.selectedItem = null;
@@ -1000,7 +1001,7 @@
                                 "or": [
                                     {
                                         "field": "sys.slug",
-                                        "contains": eventQueryString
+                                        "equalTo": eventQueryString
                                     }
                                 ]
                             },
@@ -1051,7 +1052,10 @@
                             .finally(() => this.loading = false)
                     },
                     getShareableLink(selectedItem) {
+                        let params = new URLSearchParams(window.location.search);
+                        params.delete('event');
                         navigator.clipboard.writeText(window.location.href + "?event=" + selectedItem.sys.slug);
+                        vanillaToast.show('Event URL copied to cliboard');
                     }
                 },
 
