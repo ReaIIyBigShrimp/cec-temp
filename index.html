@@ -17,9 +17,6 @@
 </head>
 
 <body>
-
-
-
     <!-- <script src="/SiteElements/js/vanilla-toast/vanilla-toast.js"></script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2">
@@ -96,8 +93,8 @@
 
                     <div class="card-body col-12 col-md-8 text-center text-md-start ps-md-4 ps-xl-2">
                         <!-- <h2 class="card-title fs-3 mb-4">{{ item.entryTitle }}</h2> -->
-                        <h2 class="ranger-event-heading-link"><a v-on:click="setSelectedItem(item)" role="button"
-                                class="ranger-event-title-link card-title">{{ item.entryTitle }}</a></h2>
+                        <h2 class="ranger-event-heading-link"><button v-on:click="setSelectedItem(item)" role="button"
+                                class="ranger-event-title-link card-title">{{ item.entryTitle }}</button></h2>
                         <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
                             <li class="list-inline-item me-4"><strong>Start:</strong>
                                 {{ item.dateStartEnd.from | formatDate }}</li>
@@ -117,8 +114,8 @@
             <!-- Selected event details -->
 
             <div v-if="showSelectedItem" class="selectedItem">
-                <a v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                    results</a>
+                <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
+                    results</button>
                 <h2 class="selected-item-details--title text-center">{{ selectedItem.title }}</h2>
                 <ul class="list-unstyled list-inline ms-0 ps-0 text-center">
                     <li class="list-inline-item me-4"><strong>Start:</strong>
@@ -181,8 +178,8 @@
                         </div>
                         <div class="col-12">
                             <hr>
-                            <a v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                                results</a>
+                            <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
+                                results</button>
                         </div>
 
                     </div>
