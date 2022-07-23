@@ -36,7 +36,7 @@
 
     <div id="contentTypesContainer">
         <!-- ID for this element must match the created VUE object instance -->
-
+    
         <!-- User editable region -->
         <div class="row events-container">
             <div class="col-lg-8">
@@ -51,23 +51,21 @@
                             <li v-if="showFirstLastBtns" class="page-item">
                                 <!-- Can be set to show/hide by setting the showFirstLastBtns to true/false -->
                                 <button class="page-link" type="button" aria-label="Next" v-on:click="goToPage(1)">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </button>
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </button>
                             </li>
-                            <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item"
-                                v-bind:class="{ active: currentPageIndex == pageBtn.pageNum - 1 }"><button
-                                    class="page-link" type="button"
-                                    v-on:click="goToPage(pageBtn.pageNum)">{{ pageBtn.pageNum }}</button></li>
+                            <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item" v-bind:class="{ active: currentPageIndex == pageBtn.pageNum - 1 }"><button
+                                        class="page-link" type="button"
+                                        v-on:click="goToPage(pageBtn.pageNum)">{{ pageBtn.pageNum }}</button></li>
                             <!-- Numbered pagination buttons. Can be hidden/shown by toggling showPageBtns to true/false -->
                             <li v-if="showFirstLastBtns" class="page-item">
                                 <!-- Can be set to show/hide by setting the showFirstLastBtns to true/false -->
                                 <button class="page-link" type="button" aria-label="Next"
-                                    v-on:click="goToPage(pageCount)">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </button>
+                                        v-on:click="goToPage(pageCount)">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </button>
                             </li>
-                            <li class="page-item"
-                                v-bind:class="{ disabled: currentPageIndex+1 == pageCount || loading }">
+                            <li class="page-item" v-bind:class="{ disabled: currentPageIndex+1 == pageCount || loading }">
                                 <button class="page-link" type="button" v-on:click="nextPage">Next</button>
                             </li>
                         </ul>
@@ -83,21 +81,20 @@
                     </div>
                 </div>
                 <!-- Events output -->
-                <div v-if="!showSelectedItem" v-for="item in items"
-                    class="ranger-event-card card card-item flex-md-row align-items-center">
+                <div v-if="!showSelectedItem" v-for="item in items" class="ranger-event-card card card-item flex-md-row align-items-center">
                     <!--<img class="card-img-top" v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri" >-->
                     <div class="col-12 col-md-4 thumbnail-container d-flex justify-content-center px-2">
                         <img v-if="item.image != null" class="img-thumbnail img-fluid mt-4 m-md-2"
-                            v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
-                            v-bind:alt="item.title">
+                                v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
+                                v-bind:alt="item.title">
                     </div>
-
-
-
+    
+    
+    
                     <div class="card-body col-12 col-md-8 text-center text-md-start ps-md-4 ps-xl-2">
                         <!-- <h2 class="card-title fs-3 mb-4">{{ item.entryTitle }}</h2> -->
-                        <h2 class="ranger-event-heading-link"><button v-on:click="setSelectedItem(item)" role="button"
-                                class="ranger-event-title-link card-title">{{ item.entryTitle }}</button></h2>
+                        <button v-on:click="setSelectedItem(item)" role="button"
+                                    class="ranger-event-title-link-button mb-3">{{ item.entryTitle }}</button>
                         <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
                             <li class="list-inline-item me-4"><strong>Start:</strong>
                                 {{ item.dateStartEnd.from | formatDate }}</li>
@@ -109,16 +106,16 @@
                             {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
                         <p>{{item.excerpt}}</p>
                         <!-- <a v-on:click="setSelectedItem(item)" role="button" class="cec-button">View Event<span
-                                            class="visually-hidden">: </span><span class="visually-hidden"
-                                            v-html="item.entryTitle"></span> </a> -->
+                                                class="visually-hidden">: </span><span class="visually-hidden"
+                                                v-html="item.entryTitle"></span> </a> -->
                     </div>
                 </div>
             </div>
             <!-- Selected event details -->
-
+    
             <div v-if="showSelectedItem" class="selectedItem">
                 <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                    results</button>
+                        results</button>
                 <h2 class="selected-item-details--title text-center">{{ selectedItem.title }}</h2>
                 <ul class="list-unstyled list-inline ms-0 ps-0 text-center">
                     <li class="list-inline-item me-4"><strong>Start:</strong>
@@ -129,10 +126,10 @@
                 <div class="selected-item-details">
                     <div class="row">
                         <div class="col-12">
-
+    
                             <img v-if="selectedItem.image != null" class="rounded mx-auto d-block featured-img"
-                                v-bind:src="'https://www.cheshireeast.gov.uk/' + selectedItem.image.asset.sys.uri"
-                                v-bind:alt="selectedItem.title">
+                                    v-bind:src="'https://www.cheshireeast.gov.uk/' + selectedItem.image.asset.sys.uri"
+                                    v-bind:alt="selectedItem.title">
                             <hr>
                         </div>
                         <div class="col-lg-6 pb-lg-2">
@@ -147,75 +144,72 @@
                             <p><strong>More information:</strong> <span v-html="selectedItem.eventInformation"></span>
                             </p>
                             <p><strong>Tags:</strong>
-                                <ul>
-                                    <li v-for="tag in selectedItem.tags">
-                                        {{ tag.name }}
-                                    </li>
-                                </ul>
+                            <ul>
+                                <li v-for="tag in selectedItem.tags">
+                                    {{ tag.name }}
+                                </li>
+                            </ul>
                             </p>
                             <h3>Meeting point</h3>
                             <p v-html="selectedItem.meetingPoint"></p>
                             <div class="selected-item-details__map">
                                 <div id="map" ref="mapDiv">
-                                    <a target="_blank"
-                                        v-bind:href="'https://maps.google.com/maps?q='+ selectedItem.mapLocation.lat + ',' + selectedItem.mapLocation.lon"
-                                        class="cec-button cec-button-forward" role="button" aria-pressed="true">Get
+                                    <a target="_blank" v-bind:href="'https://maps.google.com/maps?q='+ selectedItem.mapLocation.lat + ',' + selectedItem.mapLocation.lon" class="cec-button cec-button-forward" role="button" aria-pressed="true">Get
                                         Directions <small>(opens new window)</small></a>
                                 </div>
                                 <div class="share">
-                                    <div class="card" style="width: 18rem;">
+                                    <div class="card">
                                         <ul class="list-group list-group-flush">
                                             <li id="selectedEventUrlElem" class="list-group-item">
                                                 {{ selectedItem.sys.slug | prependURL }}
                                             </li>
-                                          <li class="list-group-item">
-                                            <a v-on:click="getShareableLink(selectedItem)"
-                                            class="btn btn-primary cec-button cec-button-forward" role="button" aria-pressed="true">
-                                                Copy URL to clipboard
-                                            </a>
-                                          </li>
+                                            <li class="list-group-item">
+                                                <button v-on:click="getShareableLink(selectedItem)" type="button" aria-pressed="true" class="ranger-event-title-link-button">
+                                                    <small>Copy URL to clipboard</small>
+                                                </button>
+                                            </li>
                                         </ul>
-                                      </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <hr>
                             <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                                results</button>
+                                    results</button>
                         </div>
-
+    
                     </div>
-
+    
                 </div>
             </div>
-
+    
             <div v-if="!showSelectedItem" class="col-lg-4 mt-3 mt-lg-0">
                 <div class="search-options-container border-secondary border border-1 rounded p-3">
                     <h2 class="mt-0">Search for an event</h2>
-
+    
                     <div class="date-range">
                         <h3>Date range</h3>
                         <label for="start-date">From</label>
-
+    
                         <input type="date" id="start-date" name="start-date" v-model="fromDate" min="2020-06-07"
-                            max="2025-06-14" v-on:change="searchContentType()">
+                                max="2025-06-14" v-on:change="searchContentType()">
                         <label for="end-date">To</label>
                         <input type="date" id="end-date" name="end-date" v-model="toDate" min="2020-06-07"
-                            max="2025-06-14" v-on:change="searchContentType()">
+                                max="2025-06-14" v-on:change="searchContentType()">
                     </div>
-
+    
                     <div class="search-options mt-3">
                         <div v-if="showSearch" class="input-group content-type-search">
                             <input type="text" class="form-control me-2 border-secondary border border-1"
-                                placeholder="Type here..." v-model="searchTerm" aria-label="Search term"
-                                id="contentTypeSearchInput">
+                                    placeholder="Type here..." v-model="searchTerm" aria-label="Search term"
+                                    id="contentTypeSearchInput">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-outline-secondary"
-                                    v-on:click="searchContentType(searchTerm)" id="contentTypeSearchBtn">Search</button>
+                                        v-on:click="searchContentType(searchTerm)" id="contentTypeSearchBtn">Search</button>
                             </div>
                             <button class="btn btn-outline-secondary w-100 mt-3" type="button"
-                                v-on:click="resetSearch">Clear</button>
+                                    v-on:click="resetSearch">Clear</button>
                         </div>
                         <div v-if="showSearch" class="search-error-messages">
                             <div v-if="searchAlert" class="alert alert-secondary mt-2" role="alert">
@@ -223,48 +217,44 @@
                             </div>
                         </div>
                     </div>
-
+    
                 </div>
-
+    
                 <div class="category-options pt=5 mt-5">
                     <h3 class="mb-3">Or filter events by category</h3>
                     <div class="form-check" v-for="category in categoryOptions">
                         <input class="form-check-input" type="checkbox" name="categoryOption" v-bind:id="category.id"
-                            v-on:change="filterList(category)">
+                                v-on:change="filterList(category)">
                         <label class="form-check-label" v-bind:for="category.id">{{ category.name }}</label>
                     </div>
                 </div> <!-- End of category options -->
-
-
-
+    
+    
+    
             </div>
         </div>
-
+    
         <!-- End of user editable region -->
-
+    
         <!-- Bottom navigation -->
         <!-- **DO NOT EDIT** -->
         <div v-if="showPaginationBottom && !showSelectedItem" class="mt-1 mb-1">
             <nav aria-label="Results data navigation">
                 <ul class="pagination mb-0">
-                    <li class="page-item" v-bind:class="{ disabled: currentPageIndex == 0 }"><a class="page-link"
-                            v-on:click="previousPage">Previous</a></li>
+                    <li class="page-item" v-bind:class="{ disabled: currentPageIndex == 0 }"><a class="page-link" v-on:click="previousPage">Previous</a></li>
                     <li v-if="showFirstLastBtns" class="page-item">
                         <a class="page-link" href="#" aria-label="Next" v-on:click="goToPage(1)">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item"
-                        v-bind:class="{ active: currentPageIndex == pageBtn.pageNum - 1 }"><a class="page-link"
-                            v-on:click="goToPage(pageBtn.pageNum)">{{ pageBtn.pageNum }}</a></li>
+                    <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item" v-bind:class="{ active: currentPageIndex == pageBtn.pageNum - 1 }"><a class="page-link" v-on:click="goToPage(pageBtn.pageNum)">{{ pageBtn.pageNum }}</a></li>
                     <li v-if="showFirstLastBtns" class="page-item">
-
+    
                         <a class="page-link" href="#" aria-label="Next" v-on:click="goToPage(pageCount)">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
-                    <li class="page-item" v-bind:class="{ disabled: currentPageIndex+1 == pageCount }"><a
-                            class="page-link" v-on:click="nextPage">Next</a></li>
+                    <li class="page-item" v-bind:class="{ disabled: currentPageIndex+1 == pageCount }"><a class="page-link" v-on:click="nextPage">Next</a></li>
                 </ul>
             </nav>
             <div v-if="loading == false" class="api-results-info">
@@ -478,8 +468,8 @@
                         const minutes = d.getMinutes();
                         return hours.toString() + ":" + (minutes < 10 ? '0' : '') + minutes.toString();
                     },
-                    prependURL(value) {
-                        return window.location.href + "?event=" + value
+                     prependURL(value) {
+                        return location.protocol + '//' + location.host + location.pathname + "?event=" + value;
                     }
                 },
                 methods: {
@@ -956,47 +946,22 @@
                         console.log(this.selectedItem);
                         let params = new URLSearchParams(window.location.search);
                         params.delete('event');
+                        window.history.pushState('', '', "/?event=" + item.sys.slug);
                     },
                     unSetSelectedItem: function () {
                         this.selectedItem = null;
                         this.showSelectedItem = false;
                         this.selectedCategoryOptions = [];
-                    },
-                    generateCategoryOptions: function () {
-                        // todo
+                        let url= document.location.href;
+                        window.history.pushState({}, "", url.split("?")[0]);
                     },
                     filterFromDates: function () {
                         console.log("ready to filter from dates...");
                         console.log(this.fromDate);
                         console.log(this.toDate);
                     },
-                    initGoogleMap: function (item) {
-                        // For event instance, generate map
-                        // TODO
-                        // The location of Uluru
-                        console.log("Example Google Maps");
-                        const uluru = {
-                            lat: -25.344,
-                            lng: 131.036
-                        };
-                        // The map, centered at Uluru
-                        let mapDivRef = this.$refs["mapDiv"];
-                        console.log(mapDivRef);
-                        //console.log(document.getElementById("map"));
-
-                        /* const map = new google.maps.Map(mapDivRef, {
-                            zoom: 4,
-                            center: uluru,
-                        });
-                        // The marker, positioned at Uluru
-                        const marker = new google.maps.Marker({
-                            position: uluru,
-                            map: map,
-                        }); */
-                    },
                     getEvent(eventQueryString) {
                         // Use query string from url and use for making an API call for single event.
-                        
                         let query = [{
                                 "or": [
                                     {
@@ -1043,6 +1008,7 @@
                                 this.generatePaginationBtns(this.currentPageIndex);
                                 console.log("Success!!");
                                 console.log(response);
+                                this.setSelectedItem(this.items[0]);
                                 vanillaToast.show('Results Updated');
                             })
                             .catch(error => {
@@ -1054,7 +1020,7 @@
                     getShareableLink(selectedItem) {
                         let params = new URLSearchParams(window.location.search);
                         params.delete('event');
-                        navigator.clipboard.writeText(window.location.href.split('?')[0] + "?event=" + selectedItem.sys.slug);
+                        navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + "?event=" + selectedItem.sys.slug);
                         vanillaToast.show('Event URL copied to cliboard');
                     }
                 },
