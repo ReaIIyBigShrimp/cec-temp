@@ -955,7 +955,7 @@
                             .finally(() => this.loading = false)
                     },
                     setSelectedItem: function (item) {
-                        // 
+                        window.scrollTo(0, 0);
                         this.selectedItem = item;
                         this.showSelectedItem = true;
                         console.log(this.selectedItem);
@@ -965,6 +965,7 @@
                             location.pathname + "?event=" + item.sys.slug);
                     },
                     unSetSelectedItem: function () {
+                        window.scrollTo(0, 0);
                         this.selectedItem = null;
                         this.showSelectedItem = false;
                         this.selectedCategoryOptions = [];
