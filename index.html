@@ -673,7 +673,8 @@
                                         "lessThanOrEqualTo": new Date((this
                                             .toDate)).toISOString()
                                     }]
-                                }]
+                                }];
+                                
                             } else {
                                 // query without search term
                                 console.log("Date query only...");
@@ -720,15 +721,13 @@
                             // Axios
                             axios
                                 .get(
-                                    (this.getSearchUrl()) + "search?where=" + encoded, {
+                                    (this.getSearchUrl()) + "search?where=" + encoded + "&orderBy=" + encodeURIComponent(JSON.stringify([{"asc":(this.ordering)}])), {
                                         params: {
                                             contentTypeId: this.contentType,
                                             accessToken: this.accessToken,
                                             pageSize: this.pageSize,
                                             pageIndex: 0,
                                             linkDepth: 5,
-                                            order: this.ordering
-
                                         }
                                     }
                                 )
@@ -799,14 +798,13 @@
                             // Axios
                             axios
                                 .get(
-                                    (this.getSearchUrl()) + "search?where=" + encoded, {
+                                    (this.getSearchUrl()) + "search?where=" + encoded + "&orderBy=" + encodeURIComponent(JSON.stringify([{"asc":(this.ordering)}])), {
                                         params: {
                                             contentTypeId: this.contentType,
                                             accessToken: this.accessToken,
                                             pageSize: this.pageSize,
                                             pageIndex: 0,
                                             linkDepth: 5,
-                                            order: this.ordering
 
                                         }
                                     }
@@ -905,16 +903,8 @@
                                     "field": "sys.contentTypeId",
                                     "equalTo": "rangerEvents"
                                 }
-
                             ];
                         }
-
-
-
-                        const thing =
-                            "https://cms-chesheast.cloud.contensis.com/api/delivery/projects/website/entries/search?linkDepth=1&pageIndex=0&pageSize=10&where=%5B%7B%22field%22%3A%22sys.versionStatus%22%2C%22equalTo%22%3A%22latest%22%7D%2C%7B%22field%22%3A%22sys.contentTypeId%22%2C%22equalTo%22%3A%22rangerEvents%22%7D%2C%7B%22field%22%3A%22tags%22%2C%22in%22%3A%5B%220%2F16%2F169%2F176%22%5D%7D%5D";
-
-                        //console.log(decodeURIComponent("https://cms-chesheast.cloud.contensis.com/api/delivery/projects/website/entries/search?linkDepth=1&pageIndex=0&pageSize=10&where=%5B%7B%22field%22%3A%22sys.versionStatus%22%2C%22equalTo%22%3A%22latest%22%7D%2C%7B%22field%22%3A%22sys.contentTypeId%22%2C%22equalTo%22%3A%22rangerEvents%22%7D%2C%7B%22or%22%3A%5B%7B%22and%22%3A%5B%7B%22field%22%3A%22dateStartEnd.from%22%2C%22greaterThanOrEqualTo%22%3A%222020-05-30T23%3A00%3A00.000Z%22%7D%2C%7B%22field%22%3A%22dateStartEnd.from%22%2C%22lessThanOrEqualTo%22%3A%222021-09-26T23%3A00%3A00.000Z%22%7D%5D%7D%2C%7B%22and%22%3A%5B%7B%22field%22%3A%22dateStartEnd.to%22%2C%22greaterThanOrEqualTo%22%3A%222020-05-30T23%3A00%3A00.000Z%22%7D%2C%7B%22field%22%3A%22dateStartEnd.to%22%2C%22lessThanOrEqualTo%22%3A%222021-09-26T23%3A00%3A00.000Z%22%7D%5D%7D%5D%7D%5D"));
 
                         uri = JSON.stringify(query);
 
@@ -927,14 +917,13 @@
                         // Axios
                         axios
                             .get(
-                                (this.getSearchUrl()) + "search?where=" + encoded, {
+                                (this.getSearchUrl()) + "search?where=" + encoded + "&orderBy=" + encodeURIComponent(JSON.stringify([{"asc":(this.ordering)}])), {
                                     params: {
                                         contentTypeId: this.contentType,
                                         accessToken: this.accessToken,
                                         pageSize: this.pageSize,
                                         pageIndex: 0,
                                         linkDepth: 5,
-                                        order: this.ordering
                                     }
                                 }
                             )
