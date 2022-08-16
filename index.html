@@ -321,6 +321,10 @@
                     var url = this.url
                     // Add access token to URL
                     url = url + '?accessToken=' + this.accessToken;
+                    // If SpecificListing is set
+                    /* if (this.specificListing != null || this.specificListing.length >= 0) {
+                        url = url + "?search=" 
+                    } */
                     // Add link depth to URL
                     url = url + '&linkDepth=' + this.linkDepth;
                     // Add page size to URL
