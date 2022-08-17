@@ -319,12 +319,18 @@
             methods: {
                 getBaseUrl: function () {
                     var url = this.url
-                    // Add access token to URL
-                    url = url + '?accessToken=' + this.accessToken;
                     // If SpecificListing is set
-                    /* if (this.specificListing != null || this.specificListing.length >= 0) {
-                        url = url + "?search=" 
-                    } */
+                    if (this.specificListing != null || this.specificListing.length >= 0) {
+                        let query = 
+                            [{
+                                "field": "specificListing",
+                                "contains": this.specificListing,
+                            }];
+                        url = url + "search?where=" + encodeURIComponent(JSON.stringify(query))
+                    }
+
+                    // Add access token to URL
+                    url = url + '&accessToken=' + this.accessToken;
                     // Add link depth to URL
                     url = url + '&linkDepth=' + this.linkDepth;
                     // Add page size to URL
