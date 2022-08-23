@@ -86,38 +86,80 @@
 
         <!-- User editable region -->
         <section>
+            <style>
+                .event-details__btn-container {}
+            </style>
 
-            <!-- Define your content here -->
-            <div class="table-responsive">
-                <div v-if="!showSelectedItem" v-for="item in items"
-                    class="ranger-event-card card card-item flex-md-row align-items-center">
-                    <!--<img class="card-img-top" v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri" >-->
-                    <div class="col-12 col-md-4 thumbnail-container d-flex justify-content-center px-2">
-                        <img v-if="item.image != null" class="img-thumbnail img-fluid mt-4 m-md-2"
-                            v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
-                            v-bind:alt="item.title">
-                    </div>
-
-                    <div class="card-body col-12 col-md-8 text-center text-md-start ps-md-4 ps-xl-2">
-                        <!-- <h2 class="card-title fs-3 mb-4">{{ item.entryTitle }}</h2> -->
-                        <button v-on:click="setSelectedItem(item)" role="button"
-                            class="ranger-event-title-link-button mb-3">{{ item.entryTitle }}</button>
-                        <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
-                            <li class="list-inline-item me-4"><strong>Start:</strong>
-                                {{ item.dateStartEnd.from | formatDate }}</li>
-                            <li class="list-inline-item"><strong>End:</strong> {{ item.dateStartEnd.to | formatDate }}
-                            </li>
-                        </ul>
-                        <!-- <p class="card-text" v-html="item.description"></p> -->
-                        <p><strong>Time:</strong> {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
-                            {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
-                        <p>{{item.excerpt}}</p>
-                        <!-- <a v-on:click="setSelectedItem(item)" role="button" class="cec-button">View Event<span
-                                                    class="visually-hidden">: </span><span class="visually-hidden"
-                                                    v-html="item.entryTitle"></span> </a> -->
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item" v-for="(item, index) in items">
+                    <h2 class="accordion-header" :id="'heading'+index">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            :data-bs-target="'#collapse'+index" aria-expanded="true" :aria-controls="'collapse'+index">
+                            <div class="col-12 col-md-4 thumbnail-container d-flex justify-content-center px-2">
+                                <img v-if="item.image != null" class="img-thumbnail img-fluid mt-4 m-md-2"
+                                    v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
+                                    v-bind:alt="item.title">
+                            </div>
+                            <div class="event-details__btn-container">
+                                <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
+                                    <li class="list-inline-item me-4"><strong>Start:</strong>
+                                        {{ item.dateStartEnd.from | formatDate }}</li>
+                                    <li class="list-inline-item"><strong>End:</strong>
+                                        {{ item.dateStartEnd.to | formatDate }}
+                                    </li>
+                                </ul>
+                                <!-- <p class="card-text" v-html="item.description"></p> -->
+                                <p><strong>Time:</strong> {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                    {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                                <p>{{item.excerpt}}</p>
+                            </div>
+                        </button>
+                    </h2>
+                    <div :id="'collapse'+index" class="accordion-collapse collapse" :aria-labelledby="'heading'+index"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="selected-item-details">
+                                <div class="row">
+                                    <div class="col-lg-6 pb-lg-2">
+                                        <h3>Description</h3>
+                                        <div class="selected-item-details--description"
+                                            v-html="item.description"></div>
+                                    </div>
+                                    <div class="col-lg-6 pb-2">
+                                        <h3>Details</h3>
+                                        <p><strong>Time:</strong>
+                                            {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                            {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                                        <p><strong>Leader(s):</strong> {{ item.leaders }}</p>
+                                        <p><strong>More information:</strong> <span
+                                                v-html="item.eventInformation"></span>
+                                        </p>
+                                        <p><strong>Tags:</strong>
+                                            <ul>
+                                                <li v-for="tag in item.tags">
+                                                    {{ tag.name }}
+                                                </li>
+                                            </ul>
+                                        </p>
+                                        <h3>Meeting point</h3>
+                                        <p v-html="item.meetingPoint"></p>
+                                        <div class="selected-item-details__map">
+                                            <div id="map" ref="mapDiv">
+                                                <a target="_blank"
+                                                    v-bind:href="'https://maps.google.com/maps?q='+ item.mapLocation.lat + ',' + item.mapLocation.lon"
+                                                    class="cec-button cec-button-forward" role="button"
+                                                    aria-pressed="true">Get
+                                                    Directions <small>(opens new window)</small></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </section> <!-- End of user editable region -->
 
         <!-- Bottom navigation -->
@@ -162,79 +204,7 @@
             </div>
         </div>
 
-        <!-- Selected event details -->
-
-        <div v-if="showSelectedItem" class="selectedItem">
-            <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                results</button>
-            <h2 class="selected-item-details--title text-center">{{ selectedItem.title }}</h2>
-            <ul class="list-unstyled list-inline ms-0 ps-0 text-center">
-                <li class="list-inline-item me-4"><strong>Start:</strong>
-                    {{ selectedItem.dateStartEnd.from | formatDate }}</li>
-                <li class="list-inline-item"><strong>End:</strong> {{ selectedItem.dateStartEnd.to | formatDate }}
-                </li>
-            </ul>
-            <div class="selected-item-details">
-                <div class="row">
-                    <div class="col-12">
-
-                        <img v-if="selectedItem.image != null" class="rounded mx-auto d-block featured-img"
-                            v-bind:src="'https://www.cheshireeast.gov.uk/' + selectedItem.image.asset.sys.uri"
-                            v-bind:alt="selectedItem.title">
-                        <hr>
-                    </div>
-                    <div class="col-lg-6 pb-lg-2">
-                        <h3>Description</h3>
-                        <div class="selected-item-details--description" v-html="selectedItem.description"></div>
-                    </div>
-                    <div class="col-lg-6 pb-2">
-                        <h3>Details</h3>
-                        <p><strong>Time:</strong> {{ selectedItem.dateStartEnd.from | getTimeOnlyFromDate }} -
-                            {{ selectedItem.dateStartEnd.to | getTimeOnlyFromDate }}</p>
-                        <p><strong>Leader(s):</strong> {{ selectedItem.leaders }}</p>
-                        <p><strong>More information:</strong> <span v-html="selectedItem.eventInformation"></span>
-                        </p>
-                        <p><strong>Tags:</strong>
-                            <ul>
-                                <li v-for="tag in selectedItem.tags">
-                                    {{ tag.name }}
-                                </li>
-                            </ul>
-                        </p>
-                        <h3>Meeting point</h3>
-                        <p v-html="selectedItem.meetingPoint"></p>
-                        <div class="selected-item-details__map">
-                            <div id="map" ref="mapDiv">
-                                <a target="_blank"
-                                    v-bind:href="'https://maps.google.com/maps?q='+ selectedItem.mapLocation.lat + ',' + selectedItem.mapLocation.lon"
-                                    class="cec-button cec-button-forward" role="button" aria-pressed="true">Get
-                                    Directions <small>(opens new window)</small></a>
-                            </div>
-                            <div class="share">
-                                <div class="card">
-                                    <ul class="list-group list-group-flush">
-                                        <li id="selectedEventUrlElem" class="list-group-item">
-                                            {{ selectedItem.sys.slug | prependURL }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <button v-on:click="getShareableLink(selectedItem)" type="button"
-                                                aria-pressed="true" class="ranger-event-title-link-button cec-button">
-                                                <small>Copy URL to clipboard</small>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <hr>
-                        <button v-on:click="unSetSelectedItem" role="button" class="cec-button cec-button--back">Back to
-                            results</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- Toast Container -->
@@ -254,7 +224,7 @@
                     // Content Type Settings
                     // Please change the below settings when using a different content type
                     // In most cases, the URL is the only property to change here before rendering the content above, using the following syntax(example): {{ item.consultantTitle }} within the HTML.
-                    url: 'https://cms-chesheast.cloud.contensis.com/api/delivery/projects/Website/contentTypes/rangerEvents/entries/',
+                    url: 'https://cms-chesheast.cloud.contensis.com/api/delivery/projects/Website/entries/',
                     accessToken: 'QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I', // API access token, replace if expired
                     linkDepth: 5, // leave at 5 if unsure.
                     pageSize: 20, // number of results per page. Do not leave blank
@@ -267,7 +237,7 @@
                     showPaginationBottom: true, // Toggle to show/hide the top pagination buttons
 
                     // Specific Listing
-                    specificListing: "Tegg's Nose",
+                    specificLocation: "Tegg's Nose",
 
                     // **DO NOT EDIT BELOW**
                     numOfPaginationBtns: 0, // number of buttons for paginating the results. Set to 0 to show all.
@@ -319,13 +289,20 @@
             methods: {
                 getBaseUrl: function () {
                     var url = this.url
-                    // If SpecificListing is set
-                    if (this.specificListing != null || this.specificListing.length >= 0) {
-                        let query = 
-                            [{
-                                "field": "specificListing",
-                                "contains": this.specificListing,
-                            }];
+                    // If specificLocation is set
+                    if (this.specificLocation != null || this.specificLocation.length >= 0) {
+                        let query = [{
+                            "field": "sys.versionStatus",
+                            "equalTo": "latest"
+                        }, {
+                            "field": "sys.contentTypeId",
+                            "equalTo": "rangerEvents"
+                        }, {
+                            "and": [{
+                                "field": "specificLocation",
+                                "contains": this.specificLocation,
+                            }]
+                        }];
                         url = url + "search?where=" + encodeURIComponent(JSON.stringify(query))
                     }
 
@@ -448,13 +425,6 @@
                     this.selectedCategoryOptions = [];
                     let url = document.location.href;
                     window.history.pushState({}, "", url.split("?")[0]);
-                },
-                getShareableLink(selectedItem) {
-                    let params = new URLSearchParams(window.location.search);
-                    params.delete('event');
-                    navigator.clipboard.writeText(location.protocol + '//' + location.host + location
-                        .pathname + "?event=" + selectedItem.sys.slug);
-                    vanillaToast.show('Event URL copied to cliboard');
                 }
             },
             mounted() {
