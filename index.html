@@ -20,8 +20,6 @@
 
 <body>
     <!-- <script src="/SiteElements/js/vanilla-toast/vanilla-toast.js"></script> -->
-
-
     <script src="/SiteElements/js/vanilla-toast/vanilla-toast.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2">
@@ -86,12 +84,8 @@
 
         <!-- User editable region -->
         <section>
-            <style>
-                .event-details__btn-container {}
-            </style>
-
             <div class="accordion" id="accordionExample">
-                <div class="accordion-item" v-for="(item, index) in items">
+                <div class="accordion-item" v-if="items.length > 0" v-for="(item, index) in items">
                     <h2 class="accordion-header" :id="'heading'+index">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             :data-bs-target="'#collapse'+index" aria-expanded="true" :aria-controls="'collapse'+index">
@@ -122,8 +116,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 pb-lg-2">
                                         <h3>Description</h3>
-                                        <div class="selected-item-details--description"
-                                            v-html="item.description"></div>
+                                        <div class="selected-item-details--description" v-html="item.description"></div>
                                     </div>
                                     <div class="col-lg-6 pb-2">
                                         <h3>Details</h3>
@@ -158,8 +151,8 @@
                         </div>
                     </div>
                 </div>
+                <p v-if="items.length <= 0">No events to show</p>
             </div>
-
         </section> <!-- End of user editable region -->
 
         <!-- Bottom navigation -->
@@ -203,8 +196,154 @@
                 <!-- <span class="sr-only">Loading...</span> -->
             </div>
         </div>
+    </div>
 
-        
+    <h2>Bollin Valley Events</h2>
+
+    <div id="contentTypesContainer2">
+        <!-- Bollin Valley -->
+        <div class="accordion" id="accordion2">
+            <div class="accordion-item" v-if="items.length > 0" v-for="(item, index) in items">
+                <h2 class="accordion-header" :id="'heading'+index">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        :data-bs-target="'#collapse'+index" aria-expanded="true" :aria-controls="'collapse'+index">
+                        <div class="col-12 col-md-4 thumbnail-container d-flex justify-content-center px-2">
+                            <img v-if="item.image != null" class="img-thumbnail img-fluid mt-4 m-md-2"
+                                v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
+                                v-bind:alt="item.title">
+                        </div>
+                        <div class="event-details__btn-container">
+                            <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
+                                <li class="list-inline-item me-4"><strong>Start:</strong>
+                                    {{ item.dateStartEnd.from | formatDate }}</li>
+                                <li class="list-inline-item"><strong>End:</strong>
+                                    {{ item.dateStartEnd.to | formatDate }}
+                                </li>
+                            </ul>
+                            <!-- <p class="card-text" v-html="item.description"></p> -->
+                            <p><strong>Time:</strong> {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                            <p>{{item.excerpt}}</p>
+                        </div>
+                    </button>
+                </h2>
+                <div :id="'collapse'+index" class="accordion-collapse collapse" :aria-labelledby="'heading'+index"
+                    data-bs-parent="#accordion2">
+                    <div class="accordion-body">
+                        <div class="selected-item-details">
+                            <div class="row">
+                                <div class="col-lg-6 pb-lg-2">
+                                    <h3>Description</h3>
+                                    <div class="selected-item-details--description" v-html="item.description"></div>
+                                </div>
+                                <div class="col-lg-6 pb-2">
+                                    <h3>Details</h3>
+                                    <p><strong>Time:</strong>
+                                        {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                        {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                                    <p><strong>Leader(s):</strong> {{ item.leaders }}</p>
+                                    <p><strong>More information:</strong> <span v-html="item.eventInformation"></span>
+                                    </p>
+                                    <p><strong>Tags:</strong>
+                                        <ul>
+                                            <li v-for="tag in item.tags">
+                                                {{ tag.name }}
+                                            </li>
+                                        </ul>
+                                    </p>
+                                    <h3>Meeting point</h3>
+                                    <p v-html="item.meetingPoint"></p>
+                                    <div class="selected-item-details__map">
+                                        <div id="map" ref="mapDiv">
+                                            <a target="_blank"
+                                                v-bind:href="'https://maps.google.com/maps?q='+ item.mapLocation.lat + ',' + item.mapLocation.lon"
+                                                class="cec-button cec-button-forward" role="button"
+                                                aria-pressed="true">Get
+                                                Directions <small>(opens new window)</small></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p v-if="items.length <= 0">No events to show</p>
+        </div>
+    </div>
+
+    <h2>Brereton Heath</h2>
+
+    <div id="contentTypesContainer3">
+        <!-- Bollin Valley -->
+        <div class="accordion" id="accordion3">
+            <div class="accordion-item" v-if="items.length > 0" v-for="(item, index) in items">
+                <h2 class="accordion-header" :id="'heading'+index">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        :data-bs-target="'#collapse'+index" aria-expanded="true" :aria-controls="'collapse'+index">
+                        <div class="col-12 col-md-4 thumbnail-container d-flex justify-content-center px-2">
+                            <img v-if="item.image != null" class="img-thumbnail img-fluid mt-4 m-md-2"
+                                v-bind:src="'https://www.cheshireeast.gov.uk/' + item.image.asset.sys.uri + '?width=225&height=150&fit=crop,center'"
+                                v-bind:alt="item.title">
+                        </div>
+                        <div class="event-details__btn-container">
+                            <ul class="list-unstyled list-inline ms-0 ps-0 mb-0">
+                                <li class="list-inline-item me-4"><strong>Start:</strong>
+                                    {{ item.dateStartEnd.from | formatDate }}</li>
+                                <li class="list-inline-item"><strong>End:</strong>
+                                    {{ item.dateStartEnd.to | formatDate }}
+                                </li>
+                            </ul>
+                            <!-- <p class="card-text" v-html="item.description"></p> -->
+                            <p><strong>Time:</strong> {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                            <p>{{item.excerpt}}</p>
+                        </div>
+                    </button>
+                </h2>
+                <div :id="'collapse'+index" class="accordion-collapse collapse" :aria-labelledby="'heading'+index"
+                    data-bs-parent="#accordion3">
+                    <div class="accordion-body">
+                        <div class="selected-item-details">
+                            <div class="row">
+                                <div class="col-lg-6 pb-lg-2">
+                                    <h3>Description</h3>
+                                    <div class="selected-item-details--description" v-html="item.description"></div>
+                                </div>
+                                <div class="col-lg-6 pb-2">
+                                    <h3>Details</h3>
+                                    <p><strong>Time:</strong>
+                                        {{ item.dateStartEnd.from | getTimeOnlyFromDate }} -
+                                        {{ item.dateStartEnd.to | getTimeOnlyFromDate }}</p>
+                                    <p><strong>Leader(s):</strong> {{ item.leaders }}</p>
+                                    <p><strong>More information:</strong> <span v-html="item.eventInformation"></span>
+                                    </p>
+                                    <p><strong>Tags:</strong>
+                                        <ul>
+                                            <li v-for="tag in item.tags">
+                                                {{ tag.name }}
+                                            </li>
+                                        </ul>
+                                    </p>
+                                    <h3>Meeting point</h3>
+                                    <p v-html="item.meetingPoint"></p>
+                                    <div class="selected-item-details__map">
+                                        <div id="map" ref="mapDiv">
+                                            <a target="_blank"
+                                                v-bind:href="'https://maps.google.com/maps?q='+ item.mapLocation.lat + ',' + item.mapLocation.lon"
+                                                class="cec-button cec-button-forward" role="button"
+                                                aria-pressed="true">Get
+                                                Directions <small>(opens new window)</small></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p v-if="items.length <= 0">No events to show</p>
+        </div>
     </div>
 
     <!-- Toast Container -->
@@ -230,6 +369,239 @@
                     pageSize: 20, // number of results per page. Do not leave blank
 
                     // Optional settings
+                    showPageBtns: false, // If set to false, the page buttons will be hidden and instead just display the 'Previous' and 'Next' buttons
+                    showFirstLastBtns: false, // Toggle to show/hide the '<<' and '>>' buttons
+
+                    showPaginationTop: false, // Toggle to show/hide the top pagination buttons
+                    showPaginationBottom: false, // Toggle to show/hide the top pagination buttons
+
+                    // Specific Listing
+                    specificLocation: "Tegg's Nose",
+
+                    // **DO NOT EDIT BELOW**
+                    numOfPaginationBtns: 0, // number of buttons for paginating the results. Set to 0 to show all.
+                    includePageCount: true, // set whether to request the page count parameter for the API calls.
+                    items: null, // array for the content types to be appended to. Will be used after the first API call, see 'mounted' hook below.
+                    loading: true, // used to determine when to show loading animation. Needs to be set to true initially. Do not change.
+                    errored: false,
+                    currentPageIndex: 0,
+                    totalCount: null, // container for
+                    pageCount: null, // container for total page count for API call, value used for pagination
+                    pageBtns: [], // Array for page pagination buttons
+
+                    selectedItem: null,
+                    showSelectedItem: false
+                }
+            },
+            filters: {
+                currencydecimal(value) {
+                    return value.toFixed(2)
+                },
+                formatDate(value) {
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+
+                    let date = new Date(value);
+
+                    const day = date.getDate();
+                    const month = monthNames[date.getMonth()];
+                    const year = date.getFullYear();
+
+                    return (day + " " + month + " " + year)
+                },
+                truncate(string) {
+                    // limit to character length
+                    return string
+                },
+                getTimeOnlyFromDate(date) {
+                    const d = new Date(date);
+                    const hours = d.getHours();
+                    const minutes = d.getMinutes();
+                    return hours.toString() + ":" + (minutes < 10 ? '0' : '') + minutes.toString();
+                },
+                prependURL(value) {
+                    return location.protocol + '//' + location.host + location.pathname + "?event=" +
+                        value;
+                }
+            },
+            methods: {
+                getBaseUrl: function () {
+                    var url = this.url
+                    // If specificLocation is set
+                    if (this.specificLocation != null || this.specificLocation.length >= 0) {
+                        let query = [{
+                            "field": "sys.versionStatus",
+                            "equalTo": "latest"
+                        }, {
+                            "field": "sys.contentTypeId",
+                            "equalTo": "rangerEvents"
+                        }, {
+                            "and": [{
+                                "field": "specificLocation",
+                                "contains": this.specificLocation,
+                            }]
+                        }];
+                        url = url + "search?where=" + encodeURIComponent(JSON.stringify(query))
+                    }
+
+                    // Add access token to URL
+                    url = url + '&accessToken=' + this.accessToken;
+                    // Add link depth to URL
+                    url = url + '&linkDepth=' + this.linkDepth;
+                    // Add page size to URL
+                    url = url + '&pageSize=' + this.pageSize;
+                    // Add page count to URL
+                    if (this.includePageCount) {
+                        url = url + '&totalCount';
+                    }
+                    url = url + '&pageCount';
+                    console.log(url);
+
+                    return url;
+                },
+                previousPage: function () {
+                    if (this.currentPageIndex > 0) {
+                        this.loading = true;
+                        var prevPageUrl = this.getBaseUrl() + '&pageIndex=' + (this.currentPageIndex - 1);
+                        axios
+                            .get(
+                                prevPageUrl
+                            )
+                            .then(response => {
+                                this.items = response.data.items;
+                                this.loading = false;
+                                console.log("Success!!");
+                                this.currentPageIndex = this.currentPageIndex - 1;
+                                this.generatePaginationBtns(this.currentPageIndex);
+                                this.loading = false;
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.errored = true
+                            })
+                            .finally(() => this.loading = false)
+                    }
+                },
+                nextPage: function () {
+                    // Check if next page exceeds page count
+                    if (this.currentPageIndex + 1 < this.pageCount) {
+                        // Set loading
+                        this.loading = true;
+                        // API call with pageIndex parameter
+                        var nextPageUrl = this.getBaseUrl() + '&pageIndex=' + (this.currentPageIndex + 1);
+
+                        axios
+                            .get(
+                                nextPageUrl
+                            )
+                            .then(response => {
+                                this.items = response.data.items;
+                                this.loading = false;
+
+                                console.log("Success!!");
+                                this.currentPageIndex = this.currentPageIndex + 1;
+                                this.generatePaginationBtns(this.currentPageIndex);
+                                this.loading = false;
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.errored = true
+                            })
+                            .finally(() => this.loading = false)
+
+                        console.log("Next page button...");
+                    }
+
+                },
+                goToPage: function (pageNum) {
+                    this.loading = true;
+                    var goToPageUrl = this.getBaseUrl() + '&pageIndex=' + (pageNum - 1);
+
+                    axios
+                        .get(
+                            goToPageUrl
+                        )
+                        .then(response => {
+                            this.items = response.data.items;
+                            this.loading = false;
+
+                            console.log("Success!!");
+                            this.currentPageIndex = pageNum - 1;
+                            this.generatePaginationBtns(this.currentPageIndex);
+                            this.loading = false;
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            this.errored = true
+                        })
+                        .finally(() => this.loading = false)
+                },
+                generatePaginationBtns: function (currentPage) {
+                    // Reset pageBtns array, before refreshing the buttons to show.
+                    // This is required as a new list of buttons will be generated 
+                    this.pageBtns = [];
+                    // get current page
+                    var currentPageValue = currentPage;
+                    for (let index = 0; index < this.pageCount; index++) {
+                        this.pageBtns.push({
+                            pageNum: index + 1
+                        });
+                    }
+                },
+                setSelectedItem: function (item) {
+                    this.selectedItem = item;
+                    this.showSelectedItem = true;
+                    console.log(this.selectedItem);
+                    let params = new URLSearchParams(window.location.search);
+                    params.delete('event');
+                    window.history.pushState('', '', location.protocol + '//' + location.host +
+                        location.pathname + "?event=" + item.sys.slug);
+                },
+                unSetSelectedItem: function () {
+                    this.selectedItem = null;
+                    this.showSelectedItem = false;
+                    this.selectedCategoryOptions = [];
+                    let url = document.location.href;
+                    window.history.pushState({}, "", url.split("?")[0]);
+                }
+            },
+            mounted() {
+                axios
+                    .get(
+                        this.getBaseUrl()
+                    )
+                    .then(response => {
+                        this.items = response.data.items;
+                        this.loading = false;
+                        this.totalCount = response.data.totalCount;
+                        this.pageCount = response.data.pageCount;
+                        this.generatePaginationBtns(this.currentPageIndex);
+                        console.log("Success!!");
+                        console.log(response);
+                        console.log(this.items);
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.errored = true
+                    })
+                    .finally(() => this.loading = false)
+            }
+        });
+
+        var app2 = new Vue({
+            el: '#contentTypesContainer2',
+            data() {
+                return {
+                    // Content Type Settings
+                    // Please change the below settings when using a different content type
+                    // In most cases, the URL is the only property to change here before rendering the content above, using the following syntax(example): {{ item.consultantTitle }} within the HTML.
+                    url: 'https://cms-chesheast.cloud.contensis.com/api/delivery/projects/Website/entries/',
+                    accessToken: 'QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I', // API access token, replace if expired
+                    linkDepth: 5, // leave at 5 if unsure.
+                    pageSize: 20, // number of results per page. Do not leave blank
+
+                    // Optional settings
                     showPageBtns: true, // If set to false, the page buttons will be hidden and instead just display the 'Previous' and 'Next' buttons
                     showFirstLastBtns: false, // Toggle to show/hide the '<<' and '>>' buttons
 
@@ -237,7 +609,240 @@
                     showPaginationBottom: true, // Toggle to show/hide the top pagination buttons
 
                     // Specific Listing
-                    specificLocation: "Tegg's Nose",
+                    specificLocation: "Bollin Valley",
+
+                    // **DO NOT EDIT BELOW**
+                    numOfPaginationBtns: 0, // number of buttons for paginating the results. Set to 0 to show all.
+                    includePageCount: true, // set whether to request the page count parameter for the API calls.
+                    items: null, // array for the content types to be appended to. Will be used after the first API call, see 'mounted' hook below.
+                    loading: true, // used to determine when to show loading animation. Needs to be set to true initially. Do not change.
+                    errored: false,
+                    currentPageIndex: 0,
+                    totalCount: null, // container for
+                    pageCount: null, // container for total page count for API call, value used for pagination
+                    pageBtns: [], // Array for page pagination buttons
+
+                    selectedItem: null,
+                    showSelectedItem: false
+                }
+            },
+            filters: {
+                currencydecimal(value) {
+                    return value.toFixed(2)
+                },
+                formatDate(value) {
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+
+                    let date = new Date(value);
+
+                    const day = date.getDate();
+                    const month = monthNames[date.getMonth()];
+                    const year = date.getFullYear();
+
+                    return (day + " " + month + " " + year)
+                },
+                truncate(string) {
+                    // limit to character length
+                    return string
+                },
+                getTimeOnlyFromDate(date) {
+                    const d = new Date(date);
+                    const hours = d.getHours();
+                    const minutes = d.getMinutes();
+                    return hours.toString() + ":" + (minutes < 10 ? '0' : '') + minutes.toString();
+                },
+                prependURL(value) {
+                    return location.protocol + '//' + location.host + location.pathname + "?event=" +
+                        value;
+                }
+            },
+            methods: {
+                getBaseUrl: function () {
+                    var url = this.url
+                    // If specificLocation is set
+                    if (this.specificLocation != null || this.specificLocation.length >= 0) {
+                        let query = [{
+                            "field": "sys.versionStatus",
+                            "equalTo": "latest"
+                        }, {
+                            "field": "sys.contentTypeId",
+                            "equalTo": "rangerEvents"
+                        }, {
+                            "and": [{
+                                "field": "specificLocation",
+                                "contains": this.specificLocation,
+                            }]
+                        }];
+                        url = url + "search?where=" + encodeURIComponent(JSON.stringify(query))
+                    }
+
+                    // Add access token to URL
+                    url = url + '&accessToken=' + this.accessToken;
+                    // Add link depth to URL
+                    url = url + '&linkDepth=' + this.linkDepth;
+                    // Add page size to URL
+                    url = url + '&pageSize=' + this.pageSize;
+                    // Add page count to URL
+                    if (this.includePageCount) {
+                        url = url + '&totalCount';
+                    }
+                    url = url + '&pageCount';
+                    console.log(url);
+
+                    return url;
+                },
+                previousPage: function () {
+                    if (this.currentPageIndex > 0) {
+                        this.loading = true;
+                        var prevPageUrl = this.getBaseUrl() + '&pageIndex=' + (this.currentPageIndex - 1);
+                        axios
+                            .get(
+                                prevPageUrl
+                            )
+                            .then(response => {
+                                this.items = response.data.items;
+                                this.loading = false;
+                                console.log("Success!!");
+                                this.currentPageIndex = this.currentPageIndex - 1;
+                                this.generatePaginationBtns(this.currentPageIndex);
+                                this.loading = false;
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.errored = true
+                            })
+                            .finally(() => this.loading = false)
+                    }
+                },
+                nextPage: function () {
+                    // Check if next page exceeds page count
+                    if (this.currentPageIndex + 1 < this.pageCount) {
+                        // Set loading
+                        this.loading = true;
+                        // API call with pageIndex parameter
+                        var nextPageUrl = this.getBaseUrl() + '&pageIndex=' + (this.currentPageIndex + 1);
+
+                        axios
+                            .get(
+                                nextPageUrl
+                            )
+                            .then(response => {
+                                this.items = response.data.items;
+                                this.loading = false;
+
+                                console.log("Success!!");
+                                this.currentPageIndex = this.currentPageIndex + 1;
+                                this.generatePaginationBtns(this.currentPageIndex);
+                                this.loading = false;
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.errored = true
+                            })
+                            .finally(() => this.loading = false)
+
+                        console.log("Next page button...");
+                    }
+
+                },
+                goToPage: function (pageNum) {
+                    this.loading = true;
+                    var goToPageUrl = this.getBaseUrl() + '&pageIndex=' + (pageNum - 1);
+
+                    axios
+                        .get(
+                            goToPageUrl
+                        )
+                        .then(response => {
+                            this.items = response.data.items;
+                            this.loading = false;
+
+                            console.log("Success!!");
+                            this.currentPageIndex = pageNum - 1;
+                            this.generatePaginationBtns(this.currentPageIndex);
+                            this.loading = false;
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            this.errored = true
+                        })
+                        .finally(() => this.loading = false)
+                },
+                generatePaginationBtns: function (currentPage) {
+                    // Reset pageBtns array, before refreshing the buttons to show.
+                    // This is required as a new list of buttons will be generated 
+                    this.pageBtns = [];
+                    // get current page
+                    var currentPageValue = currentPage;
+                    for (let index = 0; index < this.pageCount; index++) {
+                        this.pageBtns.push({
+                            pageNum: index + 1
+                        });
+                    }
+                },
+                setSelectedItem: function (item) {
+                    this.selectedItem = item;
+                    this.showSelectedItem = true;
+                    console.log(this.selectedItem);
+                    let params = new URLSearchParams(window.location.search);
+                    params.delete('event');
+                    window.history.pushState('', '', location.protocol + '//' + location.host +
+                        location.pathname + "?event=" + item.sys.slug);
+                },
+                unSetSelectedItem: function () {
+                    this.selectedItem = null;
+                    this.showSelectedItem = false;
+                    this.selectedCategoryOptions = [];
+                    let url = document.location.href;
+                    window.history.pushState({}, "", url.split("?")[0]);
+                }
+            },
+            mounted() {
+                axios
+                    .get(
+                        this.getBaseUrl()
+                    )
+                    .then(response => {
+                        this.items = response.data.items;
+                        this.loading = false;
+                        this.totalCount = response.data.totalCount;
+                        this.pageCount = response.data.pageCount;
+                        this.generatePaginationBtns(this.currentPageIndex);
+                        console.log("Success!!");
+                        console.log(response);
+                        console.log(this.items);
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.errored = true
+                    })
+                    .finally(() => this.loading = false)
+            }
+        })
+
+        var app3 = new Vue({
+            el: '#contentTypesContainer3',
+            data() {
+                return {
+                    // Content Type Settings
+                    // Please change the below settings when using a different content type
+                    // In most cases, the URL is the only property to change here before rendering the content above, using the following syntax(example): {{ item.consultantTitle }} within the HTML.
+                    url: 'https://cms-chesheast.cloud.contensis.com/api/delivery/projects/Website/entries/',
+                    accessToken: 'QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I', // API access token, replace if expired
+                    linkDepth: 5, // leave at 5 if unsure.
+                    pageSize: 20, // number of results per page. Do not leave blank
+
+                    // Optional settings
+                    showPageBtns: true, // If set to false, the page buttons will be hidden and instead just display the 'Previous' and 'Next' buttons
+                    showFirstLastBtns: false, // Toggle to show/hide the '<<' and '>>' buttons
+
+                    showPaginationTop: true, // Toggle to show/hide the top pagination buttons
+                    showPaginationBottom: true, // Toggle to show/hide the top pagination buttons
+
+                    // Specific Listing
+                    specificLocation: "Brereton Heath",
 
                     // **DO NOT EDIT BELOW**
                     numOfPaginationBtns: 0, // number of buttons for paginating the results. Set to 0 to show all.
